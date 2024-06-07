@@ -26,3 +26,6 @@
 
 반면 도커는 호스트 OS 위에 컨테이너를 생성하므로 가상머신보다 빠르게 실행됩니다.
 또한 컨테이너는 이미지를 기반으로 생성되기 때문에 설정 작업을 반복할 필요가 없습니다.
+
+![docker_aws.png](images%2Fdocker_aws.png) | ![docker_kubernetes.png](images%2Fdocker_kubernetes.png)
+---|---|
