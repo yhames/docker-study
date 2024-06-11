@@ -11,6 +11,8 @@
     - [컨테이너 인터렉티브 모드](#컨테이너-인터렉티브-모드)
     - [컨테이너 삭제](#컨테이너-삭제)
     - [중지된 컨테이너 자동 삭제](#중지된-컨테이너-자동-삭제)
+    - [이미지 Inspect](#이미지-inspect)
+    - [](#)
 
 ## 도커 이미지
 
@@ -268,3 +270,26 @@ docker image prune
 ```bash
 docker run -p 3000:80 -d --rm <image_id>
 ```
+
+### 이미지 Inspect
+
+`inspect` 명령어를 사용하여 이미지의 상세 정보를 확인할 수 있습니다.
+
+```bash
+docker image inspect <image_id>
+```
+
+### 컨테이너 파일 복사
+
+`cp` 명령어를 사용하여 호스트의 파일을 컨테이너로 복사할 수 있습니다.
+
+```bash
+docker cp <host_file> <container_id>:<container_file>
+```
+
+반대로 컨테이너의 파일을 호스트로 복사할 수도 있습니다.
+
+```bash
+docker cp <container_id>:<container_file> <host_file>
+```
+
