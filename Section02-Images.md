@@ -13,6 +13,7 @@
     - [중지된 컨테이너 자동 삭제](#중지된-컨테이너-자동-삭제)
     - [이미지 Inspect](#이미지-inspect)
     - [컨테이너 파일 복사](#컨테이너-파일-복사)
+    - [이미지와 컨테이너 이름 및 태그 지정](#이미지와-컨테이너-이름-및-태그-지정)
 
 ## 도커 이미지
 
@@ -293,3 +294,25 @@ docker cp <host_file> <container_id>:<container_file>
 docker cp <container_id>:<container_file> <host_file>
 ```
 
+### 이미지와 컨테이너 이름 및 태그 지정
+
+컨테이너는 `--name` 옵션을 사용하여 이름을 지정할 수 있습니다.
+
+```bash
+docker run --name <container_name> <image_id>
+```
+
+이미지는 컨테이너와 달리 tag 속성을 갖고 있습니다.
+
+이미지 태그는 repository과 tag로 구성되어 있고, repository와 tag를 합쳐서 고유 식별자로 사용합니다. 
+repository는 이미지의 이름을 의미하고, tag는 이미지의 버전을 의미합니다.
+
+예를 들어 `node:14`는 `node` 이미지의 `14` 버전을 의미합니다.
+
+이미지에 -t 옵션을 사용하여 이름과 태그를 지정할 수 있습니다.
+
+> 태그를 지정하지 않으면 `latest` 태그가 자동으로 지정됩니다.
+
+```bash
+docker build -t <repository>:<tag> .
+```
