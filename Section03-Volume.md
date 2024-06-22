@@ -5,6 +5,12 @@
     - [Application Data](#application-data)
     - [Temporary Data](#temporary-data)
     - [Permanent Data](#permanent-data)
+  - [Volumes](#volumes)
+    - [Anonymous Volumes](#anonymous-volumes)
+    - [Named Volumes](#named-volumes)
+    - [Bind Mounts](#bind-mounts)
+    - [예제 설명](#예제-설명)
+  - [Volumes 요약](#volumes-요약)
 
 ## 도커에서 사용되는 데이터
 
@@ -107,3 +113,22 @@ $ docker run -p 3000:80 --rm -v "$(pwd):/app" -v feedback:/app/feedback -v /app/
   * 컨테이너의 `/app/node_modules` 디렉토리에 익명 볼륨을 생성합니다.
   * 이는 컨테이너가 종료되어도 데이터를 유지하도록 합니다.
   * 이를 설정하지 않으면 바인드 마운트 이후에 `npm install` 명령어로 생성된 컨테이너의 `/app/node_modules`가 삭제 혹은 변경될 수 있습니다.
+
+## Volumes 요약
+
+* 익명 볼륨
+  * 컨테이너가 종료되어도 데이터 유지
+  * 컨테이너를 새로 생성하면 이전 컨테이너의 볼륨은 삭제
+  * 외부에서 접근 불가
+  * 컨테이너 간 데이터 공유에 불가
+  * 컨테이너에 존재하는 특정 데이터를 잠그는데 유용 (예: `/app/node_modules`)
+* 명명된 볼륨
+  * 컨테이너가 삭제되어도 데이터 유지
+  * 컨테이너를 새로 생성해도 이전 컨테이너의 볼륨은 유지
+  * 외부에서 접근 가능
+  * 컨테이너 간 데이터 공유에 유용
+* 바인드 마운트
+  * 호스트 머신의 디렉토리를 컨테이너에 연결
+  * 컨테이너가 삭제되어도 데이터 유지
+  * 편집 가능한 데이터를 저장할 때 유용
+  * 컨테이너 간 데이터 공유에 유용
