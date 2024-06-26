@@ -15,6 +15,8 @@
   - [도커 볼륨 관리](#도커-볼륨-관리)
   - [COPY vs Bind Mount](#copy-vs-bind-mount)
   - [.dockerignore](#dockerignore)
+  - [ARG](#arg)
+  - [ENV](#env)
 
 ## 도커에서 사용되는 데이터
 
@@ -253,4 +255,64 @@ $ docker volume inspect [volume-name]
 node_modules/
 npm-debug.log
 ```
+
+## ARG
+
+`ARG` 명령어는 **빌드** 시간에 사용되는 변수를 정의할 때 사용합니다.
+`${변수명}` 형식으로 변수를 사용할 수 있습니다.
+
+```dockerfile
+ARG NODE_VERSION=14.17.0
+FROM node:${NODE_VERSION}
+```
+
+또한 `docker build` 명령어로 이미지를 빌드할 때 `--build-arg` 옵션을 사용하여 변수를 전달할 수 있습니다.
+
+```dockerfile
+FROM node:${NODE_VERSION}
+```
+
+```bash
+$ docker build --build-arg NODE_VERSION=14.17.0 -t feedback-app:volumes .
+```
+
+## ENV
+
+`ENV` 명령어는 **런타임**에 사용되는 환경 변수를 정의할 때 사용합니다.
+`Dockerfile`에 `ENV` 명령어로 설정하거나 도커 실횅시 `-e` 옵션을 사용하여 런타임에 환경 변수를 전달할 수 있습니다.
+
+```dockerfile
+ENV NODE_ENV production
+```
+
+```bash
+$ docker run -e NODE_ENV=development feedback-app:volumes
+```
+
+만약 도커파일에서 설정한 환경변수를 사용하고 싶으면 앞에 `$`를 붙여서 사용합니다.
+
+```dockerfile
+ENV PORT 3000
+EXPOSE $PORT
+```
+
+`.env` 파일을 사용하여 환경 변수를 설정하고 싶으면 `--env-file` 옵션을 사용합니다.
+
+```bash
+PORT=3000
+```
+
+```bash
+$ docker run --env-file .env feedback-app:volumes
+```
+
+> 보안사항  
+> `credential` 혹은 `access key`와 같은 중요한 정보는 `Dockerfile`에 명시하지 않고,
+> `docker run` 명령어를 실행할 때 옵션으로 추가하거나, `.env` 파일을 사용하여 환경 변수를 설정하는 것이 좋습니다.  
+> `Dockerfile`에 환경 변수를 명시하면 이미지에 환경 변수가 포함되기 때문에
+> `docker history` 명령어로 이미지의 환경 변수를 확인할 수 있기 때문입니다.
+
+
+
+
 
