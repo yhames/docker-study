@@ -114,7 +114,7 @@ $ docker run -p 3000:80 --rm -v "$(pwd):/app" -v feedback:/app/feedback -v /app/
   * 이는 컨테이너가 종료되어도 데이터를 유지하도록 합니다.
   * 이를 설정하지 않으면 바인드 마운트 이후에 `npm install` 명령어로 생성된 컨테이너의 `/app/node_modules`가 삭제 혹은 변경될 수 있습니다.
 
-## Volumes 요약
+### Volumes 요약
 
 * 익명 볼륨
   * 컨테이너가 종료되어도 데이터 유지
@@ -132,3 +132,25 @@ $ docker run -p 3000:80 --rm -v "$(pwd):/app" -v feedback:/app/feedback -v /app/
   * 컨테이너가 삭제되어도 데이터 유지
   * 편집 가능한 데이터를 저장할 때 유용
   * 컨테이너 간 데이터 공유에 유용
+
+## Read-only Volumes
+
+읽기 전용 볼륨을 사용하면 바인드 마운트를 사용할 때 컨테이너가 호스트의 디렉토리에 쓰기 권한이 없도록 설정할 수 있습니다.
+
+읽기 전용 볼륨은 바인드 바운트를 사용할 때 `ro` 옵션을 사용하여 설정할 수 있습니다.
+
+```bash
+$ docker run -v [host-path]:[container-path]:ro [image-name]
+```
+
+세부 경로 설정을 통해 읽기 전용 볼륨의 특정 디렉토리에 대해 쓰기 권한을 설정할 수 있습니다.
+
+위에서 node_modules를 익명 볼륨으로 설정하여 컨테이너가 종료되어도 데이터를 유지하도록 설정한 것과 같이
+
+세부적인 경로 설정을 통해 특정 디렉토리에 대한 쓰기 권한을 추가합니다.
+
+```bash
+$ docker run -v [host-path]:[container-path]:ro -v [container-path] [image-name]
+```
+
+위 명령어에서 두 번째 볼륨은 첫 번째 볼륨의 설정을 오버라이드하여 쓰기 권한을 부여합니다.
