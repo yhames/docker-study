@@ -12,6 +12,7 @@
     - [예제 설명](#예제-설명)
     - [Volumes 요약](#volumes-요약)
   - [Read-only Volumes](#read-only-volumes)
+  - [도커 볼륨 관리](#도커-볼륨-관리)
 
 ## 도커에서 사용되는 데이터
 
@@ -155,3 +156,74 @@ $ docker run -v [host-path]:[container-path]:ro -v [container-path] [image-name]
 ```
 
 위 명령어에서 두 번째 볼륨은 첫 번째 볼륨의 설정을 오버라이드하여 쓰기 권한을 부여합니다.
+
+## 도커 볼륨 관리
+
+도커 볼륨 목록을 확인하기 위해서 다음 명령어를 사용합니다.
+
+```bash
+$ docker volume ls
+```
+
+> 바인드 마운트된 볼륨은 도커에서 관리하지 않기 때문에 `docker volume ls` 명령어로 확인할 수 없습니다.
+
+도커 볼륨은 도커 실행시 자동으로 생성되지만, 다음 명령어를 사용하여 볼륨을 수동으로 생성하거나 삭제할 수 있습니다.
+
+```bash
+$ docker volume create [volume-name]
+```
+
+```bash
+$ docker volume rm [volume-name]
+```
+
+`prune` 명령어를 사용하여 사용하지 않는 볼륨을 삭제할 수 있습니다.
+
+```bash
+$ docker volume prune
+```
+
+`inspect` 명령어를 사용하면 볼륨의 상세 정보를 확인할 수 있습니다.
+
+```bash
+$ docker volume inspect [volume-name]
+```
+
+```json
+[
+    {
+        "CreatedAt": "2024-06-26T03:01:48Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/feedback-files/_data",
+        "Name": "feedback-files",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+```
+
+위 상세 정보에서 Mountpoint는 실제 볼륨이 저장된 경로를 의미합니다.
+
+하지만 이 경로는 호스트 머신 파일 시스템에 있는 실제 경로가 아니라 도커 가상 파일 시스템에 있는 경로입니다.
+
+만약 볼륨을 읽기 전용으로 생성한 경우 Options에 `ro` 옵션이 추가됩니다.
+
+```json
+[
+    {
+        "CreatedAt": "2024-06-26T03:01:48Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/feedback-files/_data",
+        "Name": "feedback-files",
+        "Options": {
+            "ro": "true"
+        },
+        "Scope": "local"
+    }
+]
+```
+
+
+
