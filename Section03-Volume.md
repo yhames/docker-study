@@ -13,6 +13,7 @@
     - [Volumes 요약](#volumes-요약)
   - [Read-only Volumes](#read-only-volumes)
   - [도커 볼륨 관리](#도커-볼륨-관리)
+  - [COPY vs Bind Mount](#copy-vs-bind-mount)
 
 ## 도커에서 사용되는 데이터
 
@@ -225,5 +226,30 @@ $ docker volume inspect [volume-name]
 ]
 ```
 
+## COPY vs Bind Mount
 
+바인드 마운트를 사용하는데도 여전히 COPY 명령어를 사용하는 이유는
+프로덕션 환경에서 스냅샷을 유지하기 위해서 입니다.
+
+프로덕션 환경에서 바인드 마운트를 사용하면 소스 코드를 수정할 때마다 컨테이너에 반영되기 때문에
+컨테이너가 예상치 못한 방식으로 동작할 수 있습니다.
+
+따라서, 프로덕션 환경에서는 소스 코드를 수정할 때마다 컨테이너에 반영되지 않도록 COPY 명령어를 사용하여
+스냅샷을 유지하는 것이 좋습니다.
+
+개발 환경에서는 COPY 명령어를 유지한 상태로
+바인드 마운트를 사용하여 소스 코드를 수정할 때마다 컨테이너에 반영하게 할 수 있습니다.
+
+## .dockerignore
+
+`.dockerignore` 파일을 사용하여 COPY 명령어를 사용할 때 복사하지 않을 파일을 지정할 수 있습니다.
+
+`.dockerignore` 파일은 `.gitignore` 파일과 유사하게 사용할 수 있습니다.
+
+```bash
+# .dockerignore
+.git/
+node_modules/
+npm-debug.log
+```
 
