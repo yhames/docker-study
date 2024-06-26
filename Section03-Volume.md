@@ -14,6 +14,7 @@
   - [Read-only Volumes](#read-only-volumes)
   - [도커 볼륨 관리](#도커-볼륨-관리)
   - [COPY vs Bind Mount](#copy-vs-bind-mount)
+  - [.dockerignore](#dockerignore)
 
 ## 도커에서 사용되는 데이터
 
