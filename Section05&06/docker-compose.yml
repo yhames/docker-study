@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: "mongo"        # Official MongoDB image in DockerHub
+    volumes:
+      - data:/data/db     # Named Volume
+    env_file:
+      - ./env/mongo.env
+
+  backend:
+    build: ./backend      # Directory containing Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - logs:/app/logs    # Named Volume
+      - ./backend:/app    # Bind Mount  
+      - /app/node_modules # Anonymous Volume
+    env_file:
+      - ./env/backend.env
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./frontend     # Directory containing Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src   # Bind Mount
+    stdin_open: true      # Keep STDIN open even if not attached
+    tty: true             # Allocate a pseudo-TTY for interactive sessions
+    depends_on:
+      - backend
+
+volumes:
+  data:
+  logs:
