@@ -5,6 +5,10 @@
   - [docker compose up \& down](#docker-compose-up--down)
   - [예제 - backend](#예제---backend)
   - [예제 - frontend](#예제---frontend)
+  - [유용한 옵션](#유용한-옵션)
+    - [--build 옵션](#--build-옵션)
+    - [docker compose build](#docker-compose-build)
+    - [container\_name 설정](#container_name-설정)
 
 지난 다중 컨테이너 환경을 구성하는 과정에서 수많은 docker build, docker run 명령어와 수십가지의 옵션을 사용했습니다.
 
@@ -124,3 +128,44 @@ services:
 ```
 
 이제 docker compose up 명령어를 사용하면 mongodb, backend, frontend 서비스가 동시에 실행됩니다.
+
+## 유용한 옵션
+
+### --build 옵션
+
+docker compose up 명령어에서 --build 옵션을 사용하면 이미지를 새로 빌드합니다.
+
+코드를 변경하게 되면 이미지를 새로 빌드해야하기 때문에 매번 이미지를 지우고 다시 빌드하는 것은 번거롭습니다.
+
+```bash
+$ docker-compose up --build
+```
+
+### docker compose build
+
+혹은 docker compose build 명령어를 사용하여 이미지를 빌드할 수 있습니다.
+
+```bash
+$ docker-compose build
+```
+
+하지만 docker compose build 명령어는 이미 이미지가 존재하는 경우 다시 빌드하지 않습니다.
+
+### container_name 설정
+
+```yml
+version: "3.8"
+
+services:
+  mongodb:
+    image: "mongo"
+    container_name: "mongodb"
+    volumes:
+      - data:/data/db
+    env_file:
+      - ./env/mongo.env
+volume:
+  data:
+```
+
+docker compose 설정 파일에서 container_name을 설정하면 컨테이너의 이름을 지정할 수 있습니다.
